@@ -1,1 +1,1 @@
-# omp_random_walk-
+# omp_random_walk
