@@ -28,10 +28,11 @@ void random_walk(void *context, FILE *f)
 	assert(gettimeofday(&start, NULL) == 0);
 	#pragma omp parallel for reduction (+: walking_time)
 	for (int i = 0; i < ctx->N; i++) {
+        	int local_seed = seed[i];
 		int x = ctx->x;
 		while (x != ctx->a && x != ctx->b) {
 			walking_time++;
-			double p = (double)rand_r(&seed[i]) / RAND_MAX;
+			double p = (double)rand_r(&local_seed) / RAND_MAX;
 			if (p <= ctx->p) {
 				x++;
 			} else {
@@ -67,7 +68,7 @@ int main(int argc, char **argv) {
 			.N = N,
 			.p = p,
 		};
-		
+
 		if(a >= b || N == 0 || x < a || x > b || P == 0 || p > 1 || p < 0)
 			return 0;
 
